@@ -32,7 +32,6 @@ d3.csv("./Assets/data/data.csv").then(incData => {
 
     // parse data
     incData.forEach(data => {
-        data.abbr = +data.abbr;
         data.poverty = +data.poverty;
         data.age = +data.age;
         data.income = +data.income;
@@ -41,7 +40,7 @@ d3.csv("./Assets/data/data.csv").then(incData => {
         data.healthcare = +data.healthcare;
     });
 
-    // xLinearScale function above json import
+    // xLinearScale function above csv import
     var xLinearScale = xScale(incData, chosenXAxis);
 
     // Create y scale function
@@ -68,10 +67,14 @@ d3.csv("./Assets/data/data.csv").then(incData => {
         .join("circle")
         .attr("cx", d => xLinearScale(d[chosenXAxis]))
         .attr("cy", d => yLinearScale(d[chosenYAxis]))
-        .attr("r", 10)
+        .attr("r", 15)
         .attr("fill", "red")
         .attr("opacity", 0.5)
-        .attr("stroke", "black");
+        .attr("stroke", "black")
+        .attr("font-size", 15)
+        .text(d => d.abbr);
+
+    // console.log(circlesText);
 
     // Create group for three x-axis labels
     var xlabelsGroup = chartGroup.append("g")
@@ -111,7 +114,7 @@ d3.csv("./Assets/data/data.csv").then(incData => {
         .attr("y", 0 - (margin.left - 40))
         .attr("x", 0 - (height / 2))
         .attr("value", "smokes") // value to grab for event listener
-        .classed("axis-text", true)
+        .classed("atext", true)
         .classed("inactive", true)
         .text("Smokes (%)");
     var obesityLabel = ylabelsGroup.append("text")
@@ -119,13 +122,9 @@ d3.csv("./Assets/data/data.csv").then(incData => {
         .attr("y", 0 - (margin.left - 20))
         .attr("x", 0 - (height / 2))
         .attr("value", "obesity") // value to grab for event listener
-        .classed("axis-text", true)
+        .classed("atext", true)
         .classed("inactive", true)
         .text("Obesity (%)");
-
-
-    console.log(xlabelsGroup);
-    console.log(ylabelsGroup);
 
     // updateToolTip function above csv import
     var circlesGroup = updateToolTip(circlesGroup, chosenXAxis, chosenYAxis);
@@ -205,7 +204,6 @@ d3.csv("./Assets/data/data.csv").then(incData => {
     
             // updates circles with new x values
             circlesGroup = renderCircles(circlesGroup, xLinearScale, chosenXAxis, yLinearScale, chosenYAxis);
-            console.log(circlesGroup);
     
             // updates tooltips with new info
             circlesGroup = updateToolTip(circlesGroup, chosenXAxis, chosenYAxis);
@@ -257,9 +255,6 @@ function xScale(incData, chosenXAxis) {
             d3.max(incData, d => d[chosenXAxis]) * 1.2])
         .range([0, width]);
 
-    console.log(d3.min(incData, d => d[chosenXAxis]) * 0.8);
-    console.log(d3.max(incData, d => d[chosenXAxis]) * 1.2);   
-
     return xLinearScale;
 }
 
@@ -269,8 +264,6 @@ function yScale(incData, chosenYAxis) {
     var yLinearScale = d3.scaleLinear()
         .domain([0, d3.max(incData, d => d[chosenYAxis])])
         .range([height, 0]);
-
-    console.log(d3.max(incData, d => d[chosenYAxis]));
 
     return yLinearScale;   
 }
@@ -298,7 +291,7 @@ function renderCircles(circlesGroup, newXScale, chosenXAxis, newYScale, chosenYA
     circlesGroup.transition()
         .duration(1000)
         .attr("cx", d => newXScale(d[chosenXAxis]))
-        .attr("cy", d => newYScale(d[chosenYAxis]));
+        .attr("cy", d => newYScale(d[chosenYAxis]))
 
     return circlesGroup;
 }
@@ -338,7 +331,7 @@ function updateToolTip(circlesGroup, chosenXAxis, chosenYAxis) {
     
     var toolTip = d3.tip()
         .attr("class", "tooltip")
-        .offset([80, -60])
+        .offset([0, 0])
         .html(d => `${d.state}<br>${yLabel} ${d[chosenYAxis]}${yType}<br>${xLabel} ${d[chosenXAxis]}${xType}`);
 
     circlesGroup.call(toolTip);
