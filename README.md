@@ -13,4 +13,4 @@ The data set included with the assignment is based on 2014 ACS 1-year estimates:
 I did all the things: <br>
 Javascript File: [app.js](assets/js/app.js) <br>
 HTML File: [index.html](index.html) <br>
-CSS File: [d3Style.css](assets/css/d3Style.css)
+CSS Files: [style.css](assets/css/d3Style.css) / [d3Style.css](assets/css/d3Style.css)
