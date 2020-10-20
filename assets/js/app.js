@@ -148,7 +148,7 @@ function updateToolTip(circlesText, chosenXAxis, chosenYAxis) {
 }
 
 // Retrieve data from the CSV file and execute everything below
-d3.csv("./Assets/data/data.csv").then(incData => {
+d3.csv("./assets/data/data.csv").then(incData => {
 
     // parse data
     incData.forEach(data => {
