@@ -53,13 +53,13 @@
     display: none;
   }
 
-  .aText {
+  .active {
     font-size: 14px;
   }
 }
 
 @media screen and (max-width: 400px) {
-  .aText {
+  .active {
     font-size: 13px;
   }
 }
